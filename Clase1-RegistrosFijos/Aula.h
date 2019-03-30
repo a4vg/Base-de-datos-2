@@ -26,6 +26,8 @@ struct Aula{
 
 vector<Alumno> Aula::load(){
     string nom, appat, apmat, carr;
+    int cic;
+    float mens;
     
     vector<Alumno> alumnos;
     ifstream data;
@@ -33,8 +35,8 @@ vector<Alumno> Aula::load(){
 
     if (!data.is_open()) throw runtime_error("Can't open file");
 
-    while (data  >> nom >> appat >> apmat >> carr){
-        Alumno a(nom, appat, apmat, carr);
+    while (data  >> nom >> appat >> apmat >> carr >> cic >> mens){
+        Alumno a(nom, appat, apmat, carr, cic, mens);
     
         alumnos.push_back(a);
     }
@@ -52,7 +54,8 @@ bool Aula::add(Alumno a){
          << left << setw(sizeof(a.nombre)) << a.nombre
          << left << setw(sizeof(a.apPaterno)) << a.apPaterno
          << left << setw(sizeof(a.apMaterno)) << a.apMaterno
-         << left << setw(sizeof(a.carrera)) << a.carrera;
+         << left << setw(sizeof(a.carrera)) << a.carrera
+         << a.ciclo << " " << a.mensualidad;
     
     cout << "[Added]  ";
     a.print();
