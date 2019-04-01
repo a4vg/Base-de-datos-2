@@ -19,6 +19,8 @@ int main(){
     Alumno nuevoa("Andrea", "Velasquez", "Gushiken", "Computacion", 5, 2000);
     aulita.add(nuevoa);
     
+    aulita.erase(2);
+    
     return EXIT_SUCCESS;
 }
 
