@@ -12,6 +12,9 @@ int main(){
         a.print();
     };
 
+    cout << "\n Writing to binary... \n";
+    reg.write_tobin();
+
 
 
 

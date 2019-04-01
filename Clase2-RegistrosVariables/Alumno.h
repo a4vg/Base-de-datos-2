@@ -9,7 +9,7 @@ using namespace std;
 
 class Alumno{
     public:
-        string nombre;
+        string nombre = "default";
         string apellidos;
         string carrera;
         int ciclo;
@@ -23,6 +23,7 @@ class Alumno{
              << setw(20) << carrera
              << setw(10) << mensualidad << endl;
         }
+        ~Alumno(){};
 };
 
 #endif
