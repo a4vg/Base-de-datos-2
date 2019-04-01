@@ -1,13 +1,19 @@
 #ifndef MAIN_CPP
 #define MAIN_CPP
 
-#include <iostream>
-#include "Alumno.h"
+#include "Registro.h"
 
 
 int main(){
-    string f = "./datos.txt";
-    Alumno a(f);
+    Registro reg("./datos.txt");
+
+    cout << "Datos\n----------------------\n";
+    for (auto& a : reg.get_alumnos()){
+        a.print();
+    };
+
+
+
 
 
     return 0;
