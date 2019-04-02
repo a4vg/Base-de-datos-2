@@ -9,15 +9,17 @@ using namespace std;
 
 class Alumno{
     public:
-        string nombre = "default";
+        string nombre;
         string apellidos;
         string carrera;
         int ciclo;
         float mensualidad;
 
+        Alumno(){};
         Alumno(string n, string ap, string car, float m):
         nombre(n), apellidos(ap), carrera(car), mensualidad(m){}; 
         void print(){
+            cout << "Alumno:\n";
             cout << setw(10) << nombre
              << setw(20) << apellidos
              << setw(20) << carrera

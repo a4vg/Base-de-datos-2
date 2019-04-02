@@ -49,12 +49,48 @@ vector<Alumno> Registro::get_alumnos(){
 
 
 void Registro::write_tobin(){
-    ifstream data(filename);
-    ofstream bfile("datos.dat", ios::out | ios::binary);
+    // ifstream data(filename);
+    fstream bfile("datos.dat", ios::out | ios::binary);
 
-    if (!data.is_open()) throw runtime_error("Can't open file");
-    data.ignore(256, '\n'); //ignore first line
+    if (!bfile.is_open()) throw runtime_error("Can't open file");
+    bfile.ignore(256, '\n'); //ignore first line
+
+    string nombre ="Andrea", apellidos="Velasquez Gushiken", carrera="Computacion";
+    int ciclo=5;
+    float mensualidad=3212.65;
+    Alumno a(nombre, apellidos, carrera, mensualidad);
+
+
+    // string nombre, apellidos, carrera, s_mensualidad;
+
     /*
+    while (getline(data, nombre, '|') &&
+           getline(data, apellidos, '|') &&
+           getline(data, carrera, '|') &&
+           getline(data, s_mensualidad, '\n')
+          ){
+    
+    Alumno a(nombre, apellidos, carrera, stof(s_mensualidad));
+    */
+    cout << "Writing.. alumno:\n";
+    a.print();
+    cout << "[write] sizeof(a) = " << sizeof(a) <<endl;
+    bfile.write((char*) &a, sizeof(a));
+    //}
+
+    // data.close();
+    bfile.close();
+};
+
+vector<Alumno> Registro::read_frombin(string bfilename){
+    ifstream bfile("datos.dat", ios::in | ios::binary);
+
+    if (!bfile.is_open()) throw runtime_error("Can't open file");
+    bfile.ignore(256, '\n'); //ignore first line
+
+    
+    vector<Alumno> alumnos;
+    /*   
     string nombre ="Andrea", apellidos="Velasquez Gushiken", carrera="Computacion";
     int ciclo=5;
     float mensualidad=3212.65;
@@ -63,17 +99,24 @@ void Registro::write_tobin(){
 
     string nombre, apellidos, carrera, s_mensualidad;
 
-    while (getline(data, nombre, '|') &&
-           getline(data, apellidos, '|') &&
-           getline(data, carrera, '|') &&
-           getline(data, s_mensualidad, '\n')
-          ){
-        Alumno a(nombre, apellidos, carrera, stof(s_mensualidad));
-        bfile.write((const char*) &a, sizeof(a));
+    Alumno a;
+    int count=0;
+    while (!bfile.eof()){
+        // cout << count;
+        // Alumno a(nombre, apellidos, carrera, stof(s_mensualidad));
+        // cout << "[read] sizeof(a) = " << sizeof(a) <<endl;
+        // bfile.read((char*) &a, sizeof(a));
+        // a.print();
+        // alumnos.push_back(a);
+        bfile.read((char*) &a, sizeof(a));
+        cout << bfile.tellg() <<endl;
     }
+    cout << "Nombre: " << a.nombre <<endl;
+    // a.print();
+    // a.print();
 
-    data.close();
     bfile.close();
+    return alumnos;
 };
 
 

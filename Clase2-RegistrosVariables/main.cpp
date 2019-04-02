@@ -15,6 +15,9 @@ int main(){
     cout << "\n Writing to binary... \n";
     reg.write_tobin();
 
+    cout << "\n Reading from binary... \n";
+    reg.read_frombin("datos.dat");
+
 
 
 
