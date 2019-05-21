@@ -36,10 +36,10 @@ public:
     for (int i=0; i<d; i++){
       Bucket buck;
       buck.id = i;
-      buck.name = to_string(i).append(".txt");
+      buck.name = "bucket/" + to_string(i).append(".txt");
       //buck.overflow.push_back(i);
       table.push_back(buck);
-      string svector="vector" + to_string(i).append(".txt");
+      string svector="bucket/overflow_info/vector" + to_string(i).append(".txt");
       if (!is_file_exist(svector)){
         ofstream myfile;
         myfile.open(svector);
@@ -61,7 +61,7 @@ public:
   void read(){
     ifstream myfile;
     for (int i=0; i<d; i++){
-      string svector="vector" + to_string(i).append(".txt");
+      string svector="bucket/overflow_info/vector" + to_string(i).append(".txt");
       ifstream myfile;
       string line;
       myfile.open(svector);
@@ -77,7 +77,7 @@ public:
     int buckHash=doHash(num);
     string line;
     int buckNum=table[buckHash].overflow.back();
-    string snBucket=to_string(buckNum).append(".txt");
+    string snBucket="bucket/" + to_string(buckNum).append(".txt");
     ifstream myfile;
     myfile.open(snBucket);
     while (getline (myfile,line)){
@@ -101,11 +101,11 @@ public:
       myfilec.close();
       Bucket buck;
       buck.id = count;
-      buck.name = to_string(count).append(".txt");
+      buck.name = "bucket/" + to_string(count).append(".txt");
       buck.overflow.push_back(count);
       table.push_back(buck);
       table[buckHash].overflow.push_back(count);
-      string svector="vector" + to_string(buckHash).append(".txt");
+      string svector="bucket/overflow_info/vector" + to_string(buckHash).append(".txt");
       ofstream myfilev;
       myfilev.open(svector, ios::app);
       myfilev << buck.id << endl;
@@ -119,17 +119,6 @@ public:
 
   // bool search(int num){
   //
-  // }
-
-  // void print(){
-  //   for (int i=0; i<table.size(); i++){
-  //     vector<int> vtmp=table[i].vectorfd;
-  //     cout  << table[i].id << "  ";
-  //     for (int j=0; j<vtmp.size(); j++){
-  //       cout << vtmp[j] << " ";
-  //     }
-  //     cout << endl;
-  //   }
   // }
 
 };
