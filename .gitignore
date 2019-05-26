@@ -1,0 +1,9 @@
+# ignore files without extension (executables)
+*
+!/**/
+!*.*
+ !.gitignore
+
+
+test.*
+.DS_Store
