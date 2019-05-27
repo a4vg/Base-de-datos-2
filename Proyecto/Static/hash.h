@@ -8,6 +8,8 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include <thread>
+#include <mutex>
 #include <unistd.h>
 #include <time.h>
 
@@ -21,6 +23,7 @@ private:
   vector <Bucket> table;
   int fb;//limite de datos en un bucket
   int count;
+  static mutex mlock;
 
 public:
   Hash(int numBuckets, int fdbuck, string archivo){//constructor
@@ -138,6 +141,7 @@ public:
       table[buckNum].count+=1;
     }
     myfile.close();
+    mlock.lock();
     if (table[buckNum].count<fb){//si hay espacio
       ofstream myfile;
       myfile.open(snBucket, ios::app);
@@ -178,6 +182,7 @@ public:
     }
     table[buckNum].count=0;
     cantfilas++;
+    mlock.unlock();
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
     prom+=time_span.count();

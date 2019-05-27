@@ -1,6 +1,8 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include <thread>
+#include <mutex>
 #include "ImportantOperations.cpp"
 
 typedef int keytype;
@@ -20,17 +22,21 @@ class RandomFile
     string bin_filename;
     vector<Type> columns_type;
     static int id_count;
+    static mutex mlock;
 
     public:
         map<keytype, int> dictionary;
 
         int insertRecord(string data_string){
             ofstream outfile(bin_filename, ios::app | ios::binary);
-            outfile.seekp(outfile.eof());
+            // outfile.seekp(outfile.eof());
+            mlock.lock();
             writeRecord(to_string(id_count) + "," + data_string, outfile);
+            id_count++;
+            mlock.unlock();
             outfile.close();
 
-            return id_count++;
+            return id_count;
         }
 
         void showRecord(int id){
@@ -169,12 +175,13 @@ class RandomFile
             if ((csv_file.empty() && bin_file.empty()) || (!csv_file.empty() && col_type.empty()))
                 throw("[RandomFile::RandomFile] Supply csv_file with column types or bin_file");
             
-            if (!csv_file.empty()) bin_filename = generateBinary(csv_file, col_type, has_headers);
+            if (!csv_file.empty()) { bin_filename = generateBinary(csv_file, col_type, has_headers); }
             else{
                 bin_filename=bin_file;
                 ifstream infile(bin_filename, ios::binary);
                 readColumnTypes(infile, true); // set column_types
                 infile.close();
+                uploadIndex();
             }
         };
         ~RandomFile(){
