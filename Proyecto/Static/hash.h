@@ -4,6 +4,12 @@
 #include <sstream>
 #include <string>
 #include <stdio.h>
+#include <thread>
+#include <ctime>
+#include <ratio>
+#include <chrono>
+#include <unistd.h>
+#include <time.h>
 
 #include "bucket.h"
 
@@ -36,15 +42,15 @@ public:
       if (vd!=d || vfd!=fd){//si se cambia el numero de buckets o de limite
         cout << "borra todos los txt" << endl;
         system("rm bucket/*.txt");//system ingresa el comando en terminal (macos y linux)
-        system("rm bcuket/overflow_info/*.txt");
+        system("rm bucket/overflow_info/*.txt");
         system("rm hash.txt");
         system("rm counter.txt");
+        myfile.close();
+        ofstream hmyfile;
+        hmyfile.open(hash);//ingresar el nuevo numero de buckets y limite
+        hmyfile <<  d << " " << fd << endl;
+        hmyfile.close();
       }
-      myfile.close();
-      ofstream hmyfile;
-      hmyfile.open(hash);//ingresar el nuevo numero de buckets y limite
-      hmyfile <<  d << " " << fd << endl;
-      hmyfile.close();
     }
     else{
       ofstream hmyfile;
@@ -116,8 +122,11 @@ public:
       myfile.close();
     }
   }
-
+  double prom=0;
+  double cantfilas=0;
   void insert(int num, string datos){
+    using namespace std::chrono;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     int buckHash=doHash(num);
     string line;
     string hash="hash.txt";
@@ -168,9 +177,16 @@ public:
       vfmyfile.close();
     }
     table[buckNum].count=0;
+    cantfilas++;
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    prom+=time_span.count();
+    cout << "Insertar duro " << prom/cantfilas << " segundos." << endl;
   }
 
-  void search(int target){//retorna la linea que tdv nose que es
+  void search(int target){//retorna la linea
+    using namespace std::chrono;
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     string hash="hash.txt";
     int id;
     int idb;
@@ -198,6 +214,8 @@ public:
       }
     }
     vmyfile.close();
-
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
+    cout << "Buscar duro " << time_span.count() << " segundos." << endl;
   }
 };
