@@ -19,13 +19,13 @@ class Hash{
 private:
   int d;//cantidad de  buckets
   vector <Bucket> table;
-  int fd;//limite de datos en un bucket
+  int fb;//limite de datos en un bucket
   int count;
 
 public:
   Hash(int numBuckets, int fdbuck, string archivo){//constructor
     d=numBuckets;
-    fd=fdbuck;
+    fb=fdbuck;
     string countertxt="counter.txt";
     string line;
     ifstream myfile;
@@ -39,7 +39,7 @@ public:
       ifstream myfile;
       myfile.open(hash);
       myfile >> vd >> vfd;
-      if (vd!=d || vfd!=fd){//si se cambia el numero de buckets o de limite
+      if (vd!=d || vfd!=fb){//si se cambia el numero de buckets o de limite
         cout << "borra todos los txt" << endl;
         system("rm bucket/*.txt");//system ingresa el comando en terminal (macos y linux)
         system("rm bucket/overflow_info/*.txt");
@@ -48,14 +48,14 @@ public:
         myfile.close();
         ofstream hmyfile;
         hmyfile.open(hash);//ingresar el nuevo numero de buckets y limite
-        hmyfile <<  d << " " << fd << endl;
+        hmyfile <<  d << " " << fb << endl;
         hmyfile.close();
       }
     }
     else{
       ofstream hmyfile;
       hmyfile.open(hash);//ingresar el numero de buckets y limite
-      hmyfile <<  d << " " << fd << endl;
+      hmyfile <<  d << " " << fb << endl;
       hmyfile.close();
     }
 
@@ -138,7 +138,7 @@ public:
       table[buckNum].count+=1;
     }
     myfile.close();
-    if (table[buckNum].count<fd){//si hay espacio
+    if (table[buckNum].count<fb){//si hay espacio
       ofstream myfile;
       myfile.open(snBucket, ios::app);
       myfile << num << " " << datos << endl;//meterlo al buck
